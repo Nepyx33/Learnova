@@ -1,0 +1,13 @@
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria-label="a11y.breadcrumb">
+  <ol class="breadcrumbs__list">
+<% items.forEach(function (item, i) { const last = i === items.length - 1; -%>
+    <li class="breadcrumbs__item">
+<% if (last) { -%>
+      <span class="breadcrumbs__current" aria-current="page"><%= item[0] %></span>
+<% } else { -%>
+      <a class="breadcrumbs__link" href="<%= item[1] %>"><%= item[0] %></a>
+<% } -%>
+    </li>
+<% }); -%>
+  </ol>
+</nav>

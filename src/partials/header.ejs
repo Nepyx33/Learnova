@@ -1,0 +1,32 @@
+  <a class="skip-link" href="#main" data-i18n="a11y.skipToContent">Skip to main content</a>
+  <header class="header">
+    <div class="header__inner container">
+      <a class="header__logo logo" href="./index.html" aria-label="Learnova, home page" data-i18n-aria-label="header.homeLink">
+        <svg class="logo__mark" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+          <rect width="36" height="36" rx="10" fill="#4F46E5" />
+          <path d="M13 10v16h11" stroke="#FFFFFF" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="27" cy="9" r="3.5" fill="#FFB020" />
+        </svg>
+        <span class="logo__text">Learnova</span>
+      </a>
+
+      <button class="header__menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open main menu" data-i18n-aria-label="header.openMenu">
+        <span class="header__menu-icon" aria-hidden="true"></span>
+      </button>
+
+      <nav class="header__nav nav" id="main-nav" aria-label="Main" data-i18n-aria-label="nav.label">
+        <ul class="nav__list">
+<% site.nav.forEach(function (item) { const isActive = item.id === active; -%>
+          <li class="nav__item">
+            <a class="nav__link<%= isActive ? ' nav__link--active' : '' %>" href="<%= item.href %>"<%- isActive ? ' aria-current="page"' : '' %> data-i18n="<%= item.i18n %>"><%= item.label %></a>
+          </li>
+<% }); -%>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <a class="header__action button button--ghost" href="./enrollment.html#account" data-i18n="header.logIn">Log in</a>
+        <a class="header__action button button--primary" href="./enrollment.html" data-i18n="header.signUp">Sign up</a>
+      </div>
+    </div>
+  </header>
