@@ -1,0 +1,62 @@
+name: Deploy to GitHub Pages
+
+# Site layout:
+#   /          -> latest version (main)
+#   /lab2/ ... -> frozen version of each lab, built from git tags lab2, lab3, lab4
+# To publish a new lab: tag it (git tag lab3), then push main and tags (git push origin main --tags).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # all tags are needed
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build latest version (main)
+        run: |
+          npm install
+          npm run build
+          mkdir -p site
+          cp -r dist/. site/
+
+      - name: Build every lab tag into its own folder
+        run: |
+          for tag in $(git tag -l 'lab*' | sort); do
+            echo "Building $tag"
+            git worktree add --force "../build-$tag" "$tag"
+            (cd "../build-$tag" && npm install && npx vite build --outDir "$GITHUB_WORKSPACE/site/$tag" --emptyOutDir)
+          done
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
