@@ -1,0 +1,189 @@
+// Course card (Figma: Course card — Default / Hover)
+@use "../abstracts" as *;
+
+.course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  @include surface("lg", null, true, "card");
+  @include transition(box-shadow, border-color, transform);
+
+  &:hover,
+  &:focus-within {
+    border-color: c("primary-line");
+    box-shadow: shadow("hover");
+    transform: translateY(-2px);
+  }
+
+  &__media {
+    position: relative;
+    aspect-ratio: 400 / 226;
+    background-color: c("primary-soft");
+  }
+
+  &__picture,
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__img {
+    object-fit: cover;
+  }
+
+  &__tag {
+    position: absolute;
+    top: space(3);
+    left: space(3);
+  }
+
+  &__bookmark {
+    position: absolute;
+    top: space(3);
+    right: space(3);
+    z-index: 1; // above the full-card link
+    @include flex-center;
+    width: rem(36);
+    height: rem(36);
+    color: c("ink");
+    background-color: c("surface");
+    border-radius: radius("full");
+    box-shadow: shadow("card");
+    @include transition(color, background-color);
+
+    &:hover,
+    &[aria-pressed="true"] {
+      color: c("primary");
+      background-color: c("primary-soft");
+    }
+  }
+
+  &__bookmark-icon {
+    width: rem(18);
+    height: rem(18);
+  }
+
+  &__body {
+    @include flex(column, stretch, flex-start, 2);
+    flex: 1;
+    padding: space(4);
+  }
+
+  &__meta {
+    @include flex(row, center, flex-start, 2);
+  }
+
+  &__category {
+    @include text("caption");
+    color: c("muted");
+  }
+
+  &__title {
+    @include text("h4");
+    @include truncate(2);
+    min-height: rem(52);
+  }
+
+  &__link {
+    color: c("ink");
+    text-decoration: none;
+
+    // the whole card is clickable, bookmark stays on top
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      color: c("primary");
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &:has(.course-card__link:focus-visible) {
+    @include focus-ring;
+  }
+
+  &__instructor {
+    @include text("small");
+    color: c("muted");
+  }
+
+  &__stats {
+    @include flex(row, center, flex-start, 2);
+    @include text("small");
+    color: c("muted");
+  }
+
+  &__rating {
+    &::before {
+      content: "★ ";
+      color: c("accent");
+    }
+
+    span[itemprop="ratingValue"] {
+      font-weight: 600;
+      color: c("ink");
+    }
+  }
+
+  &__duration::before {
+    content: "· ";
+    color: c("subtle");
+  }
+
+  &__footer {
+    @include flex(row, center, space-between, 2);
+    margin-top: auto;
+    padding-top: space(3);
+    border-top: 1px solid c("border");
+  }
+
+  &__lessons {
+    @include text("caption");
+    color: c("muted");
+  }
+}
+
+// price block (card, purchase card)
+.price {
+  @include flex(row, baseline, flex-start, 2, wrap);
+
+  &__current {
+    @include text("price");
+    color: c("ink");
+  }
+
+  &__old {
+    @include text("small");
+    color: c("subtle");
+  }
+
+  &__save {
+    padding: space(1) space(2);
+    @include text("caption");
+    color: c("success");
+    background-color: c("success-soft");
+    border-radius: radius("sm");
+  }
+}
+
+.rating__count {
+  color: c("subtle");
+}
+
+// grid of course cards: 1 / 2 / 4 columns
+.course-grid {
+  @include reset-list;
+  @include grid((xs: 1, md: 2, lg: 4), 6);
+
+  &__item {
+    min-width: 0;
+  }
+}

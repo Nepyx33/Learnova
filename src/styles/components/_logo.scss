@@ -1,0 +1,29 @@
+@use "../abstracts" as *;
+
+.logo {
+  @include flex(row, center, flex-start, 3);
+  color: c("ink");
+  text-decoration: none;
+
+  &:hover {
+    color: c("ink");
+  }
+
+  &__mark {
+    flex-shrink: 0;
+    width: rem(36);
+    height: rem(36);
+  }
+
+  &__text {
+    font-family: $font-heading;
+    font-size: rem(22);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  &--inverse,
+  &--inverse:hover {
+    color: c("surface");
+  }
+}

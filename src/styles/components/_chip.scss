@@ -1,0 +1,46 @@
+// Chip / filter pill (Figma: Chip — Default / Hover / Active)
+@use "../abstracts" as *;
+
+.chip {
+  @include flex(row, center, center, 1);
+  min-height: rem(36);
+  padding: space(2) space(4);
+  @include text("small-m");
+  color: c("ink");
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: c("surface");
+  border: 1px solid c("border");
+  border-radius: radius("full");
+  @include transition(background-color, border-color, color);
+
+  // only interactive chips react to hover
+  @at-root a#{&},
+  button#{&} {
+    &:hover {
+      color: c("primary");
+      background-color: c("primary-soft");
+      border-color: c("primary-line");
+    }
+  }
+
+  &--active,
+  &[aria-pressed="true"] {
+    color: c("surface");
+    background-color: c("ink");
+    border-color: c("ink");
+
+    &:hover {
+      color: c("surface");
+      background-color: mix-colors("ink", "primary", 80%);
+      border-color: transparent;
+    }
+  }
+
+  &--removable::after {
+    content: "×";
+    margin-left: space(1);
+    font-size: rem(16);
+    line-height: 1;
+  }
+}

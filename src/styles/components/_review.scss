@@ -1,0 +1,50 @@
+@use "../abstracts" as *;
+
+.review {
+  @include surface("lg", 5);
+  display: grid;
+  gap: space(3);
+
+  &__header {
+    display: grid;
+    grid-template-columns: rem(40) 1fr auto;
+    column-gap: space(3);
+    align-items: center;
+
+    // avatar placeholder
+    &::before {
+      content: "";
+      grid-row: 1 / span 2;
+      width: rem(40);
+      height: rem(40);
+      background: linear-gradient(135deg, c("primary-line"), c("primary-soft"));
+      border-radius: radius("full");
+    }
+  }
+
+  &__author {
+    @include text("small-b");
+    font-family: $font-body;
+  }
+
+  &__date {
+    grid-column: 2;
+    @include text("caption");
+    color: c("subtle");
+  }
+
+  &__rating {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    @include text("small-b");
+
+    &::before {
+      content: "★ ";
+      color: c("accent");
+    }
+  }
+
+  @include respond("lg") {
+    padding: space(6);
+  }
+}

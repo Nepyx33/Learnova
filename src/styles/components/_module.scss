@@ -1,0 +1,126 @@
+// Curriculum module (Figma: Accordion — Expanded False / True): <details> + lessons table
+@use "../abstracts" as *;
+
+.module {
+  overflow: hidden;
+  @include surface("lg");
+  @include transition(border-color);
+
+  & + & {
+    margin-top: space(3);
+  }
+
+  &[open] {
+    border-color: c("primary-line");
+  }
+
+  &__summary {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: space(3);
+    row-gap: space(1);
+    align-items: center;
+    padding: space(4) space(5);
+    list-style: none;
+    cursor: pointer;
+    @include transition(background-color);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    // chevron
+    &::before {
+      content: "";
+      grid-row: 1 / span 2;
+      width: rem(8);
+      height: rem(8);
+      margin-inline: rem(4);
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      @include transition(transform);
+    }
+
+    &:hover {
+      background-color: c("bg");
+    }
+
+    @include respond("md") {
+      grid-template-columns: auto 1fr auto;
+
+      &::before {
+        grid-row: auto;
+      }
+    }
+  }
+
+  &[open] > &__summary {
+    color: c("primary");
+    background-color: c("primary-soft");
+
+    &::before {
+      transform: rotate(-135deg);
+    }
+  }
+
+  &__title {
+    @include text("body-m");
+    color: c("ink");
+  }
+
+  &__meta {
+    grid-column: 2;
+    @include text("small");
+    color: c("muted");
+
+    @include respond("md") {
+      grid-column: 3;
+    }
+  }
+
+  &__table {
+    width: 100%;
+    @include text("small");
+    @include animate(fade, $duration-base);
+  }
+
+  &__thead {
+    @include visually-hidden; // headers stay for screen readers
+  }
+
+  &__row + &__row {
+    border-top: 1px solid c("border");
+  }
+
+  &__lesson,
+  &__duration,
+  &__access {
+    padding: space(3) space(5);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  &__lesson {
+    font-weight: 400;
+  }
+
+  &__duration {
+    color: c("muted");
+    white-space: nowrap;
+  }
+
+  &__access {
+    display: none;
+    color: c("subtle");
+    white-space: nowrap;
+
+    @include respond("md") {
+      display: table-cell;
+    }
+  }
+
+  &__preview {
+    font-weight: 600;
+  }
+}

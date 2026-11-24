@@ -1,0 +1,33 @@
+@use "../abstracts" as *;
+
+.breadcrumbs {
+  &__list {
+    @include reset-list;
+    @include flex(row, center, flex-start, 2, wrap);
+    @include text("small");
+  }
+
+  &__item {
+    @include flex(row, center, flex-start, 2);
+    color: c("muted");
+
+    &:not(:last-child)::after {
+      content: "/";
+      color: c("subtle");
+    }
+  }
+
+  &__link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: c("primary");
+      text-decoration: underline;
+    }
+  }
+
+  &__current {
+    color: c("ink");
+  }
+}

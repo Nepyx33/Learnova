@@ -49,7 +49,7 @@
           </div>
 
           <aside class="course-hero__purchase purchase" aria-labelledby="purchase-title">
-            <%- include('src/partials/picture', { name: 'covers/frontend', alt: 'Course preview: Modern JavaScript from Zero to Pro', widths: [400, 800], sizes: '(min-width: 1280px) 357px, 100vw', width: 400, height: 226, loading: 'eager', cls: 'purchase__picture', itemprop: 'image' }) %>
+            <%- include('src/partials/picture', { name: 'covers/frontend', alt: 'Course preview: Modern JavaScript from Zero to Pro', widths: [400, 800], sizes: '(min-width: 1280px) 357px, 100vw', width: 400, height: 226, loading: 'eager', block: 'purchase', itemprop: 'image' }) %>
             <h2 class="purchase__title visually-hidden" id="purchase-title" data-i18n="course.purchase.title">Enroll in this course</h2>
             <div class="purchase__body" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
               <meta itemprop="priceCurrency" content="USD" />
@@ -123,7 +123,7 @@
           <section class="course__section instructor" id="instructor" aria-labelledby="instructor-title">
             <h2 class="instructor__heading" id="instructor-title" data-i18n="course.instructor.title">Your instructor</h2>
             <div class="instructor__card" itemprop="instructor" itemscope itemtype="https://schema.org/Person">
-              <%- include('src/partials/picture', { name: 'avatars/olena', alt: 'Portrait of Olena Kovalenko', widths: [96, 192], sizes: '72px', width: 96, height: 96, cls: 'instructor__picture', itemprop: 'image' }) %>
+              <%- include('src/partials/picture', { name: 'avatars/olena', alt: 'Portrait of Olena Kovalenko', widths: [96, 192], sizes: '72px', width: 96, height: 96, block: 'instructor', itemprop: 'image' }) %>
               <h3 class="instructor__name" itemprop="name"><%= c.instructorInfo.name %></h3>
               <p class="instructor__role" itemprop="jobTitle"><%= c.instructorInfo.role %></p>
               <ul class="instructor__stats">

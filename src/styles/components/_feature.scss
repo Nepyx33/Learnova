@@ -1,0 +1,33 @@
+@use "../abstracts" as *;
+
+.feature {
+  @include flex(column, flex-start, flex-start, 3);
+  height: 100%;
+  padding: space(5);
+  background-color: c("bg");
+  border-radius: radius("xl");
+
+  &::before {
+    // icon tile
+    content: "";
+    width: rem(48);
+    height: rem(48);
+    margin-bottom: space(1);
+    background:
+      radial-gradient(circle at 50% 50%, c("surface") 0 rem(6), transparent rem(7)),
+      c("primary");
+    border-radius: radius("md");
+  }
+
+  &__title {
+    @include text("h3");
+  }
+
+  &__text {
+    color: c("muted");
+  }
+
+  @include respond("lg") {
+    padding: space(8);
+  }
+}
