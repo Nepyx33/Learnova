@@ -1,23 +1,140 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web Labs Starter</title>
+<%- include('src/partials/head', { title: 'Learn in-demand IT skills', description: 'Learnova is a catalog of project-based online IT courses: web development, data science, DevOps, mobile and design.' }) %>
 </head>
-<body>
-  <header class="u-header">
-    <nav class="u-nav">
-      <a href="#" class="u-logo">MySite</a>
-      <ul class="u-menu">
-        <li><a href="#/home">Home</a></li>
-        <li><a href="#/list">List</a></li>
-        <li><a href="#/about">About</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main id="app"></main>
-  <footer class="u-footer">© 2025</footer>
-  <script type="module" src="/src/js/main.js"></script>
+<body class="page page--home">
+<%- include('src/partials/header', { active: 'home' }) %>
+
+  <main class="main" id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__inner container">
+        <div class="hero__content">
+          <p class="hero__eyebrow"><span class="tag tag--new">New</span> <span data-i18n="home.hero.eyebrow">AI &amp; Machine Learning track is live</span></p>
+          <h1 class="hero__title" id="hero-title" data-i18n="home.hero.title">Learn in-demand IT skills with real projects</h1>
+          <p class="hero__lead" data-i18n="home.hero.lead">Online courses in web development, data science, DevOps and design, taught by practicing engineers. Learn at your own pace and build a portfolio employers notice.</p>
+
+          <form class="search hero__search" action="./courses.html" method="get" role="search" aria-label="Search courses" data-i18n-aria-label="search.label">
+            <label class="search__label visually-hidden" for="hero-search" data-i18n="search.label">Search courses</label>
+            <input class="search__input" id="hero-search" name="q" type="search" placeholder="Search courses, skills or mentors" autocomplete="off" data-i18n-placeholder="search.placeholderLong" />
+            <button class="search__button button button--primary" type="submit" data-i18n="search.submit">Search</button>
+          </form>
+
+          <div class="hero__popular">
+            <p class="hero__popular-label" id="popular-label" data-i18n="home.hero.popular">Popular:</p>
+            <ul class="hero__popular-list" aria-labelledby="popular-label">
+              <li><a class="chip" href="./courses.html?q=javascript">JavaScript</a></li>
+              <li><a class="chip" href="./courses.html?q=python">Python</a></li>
+              <li><a class="chip" href="./courses.html?q=react">React</a></li>
+              <li><a class="chip" href="./courses.html?q=docker">Docker</a></li>
+            </ul>
+          </div>
+
+          <dl class="hero__stats stats">
+            <div class="stats__item">
+              <dt class="stats__label" data-i18n="home.stats.students">Active students</dt>
+              <dd class="stats__value">12k+</dd>
+            </div>
+            <div class="stats__item">
+              <dt class="stats__label" data-i18n="home.stats.courses">Courses</dt>
+              <dd class="stats__value">180+</dd>
+            </div>
+            <div class="stats__item">
+              <dt class="stats__label" data-i18n="home.stats.rating">Average rating</dt>
+              <dd class="stats__value">4.8</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="hero__visual">
+          <%- include('src/partials/picture', { name: 'hero/hero', alt: 'A student learning JavaScript on a laptop with a progress widget showing 68% of the course completed', widths: [560, 1120], sizes: '(min-width: 1280px) 548px, (min-width: 768px) 50vw, 100vw', width: 560, height: 520, loading: 'eager', cls: 'hero__picture' }) %>
+          <figcaption class="hero__caption visually-hidden">Course progress and certificate preview</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="categories section" id="categories" aria-labelledby="categories-title">
+      <div class="container">
+        <header class="section__header">
+          <p class="section__overline" data-i18n="home.categories.overline">Categories</p>
+          <h2 class="section__title" id="categories-title" data-i18n="home.categories.title">Explore by category</h2>
+          <p class="section__subtitle" data-i18n="home.categories.subtitle">Pick a direction and start with a beginner-friendly course.</p>
+          <a class="section__link" href="./courses.html" data-i18n="home.categories.all">All categories</a>
+        </header>
+        <ul class="categories__list">
+<% site.categories.forEach(function (cat) { -%>
+          <li class="categories__item">
+            <a class="category-card" href="./courses.html?category=<%= cat.slug %>">
+              <span class="category-card__name"><%= cat.name %></span>
+              <span class="category-card__count"><%= cat.count %> courses</span>
+            </a>
+          </li>
+<% }); -%>
+        </ul>
+      </div>
+    </section>
+
+    <section class="popular section" id="popular" aria-labelledby="popular-title">
+      <div class="container">
+        <header class="section__header">
+          <p class="section__overline" data-i18n="home.popular.overline">Top rated</p>
+          <h2 class="section__title" id="popular-title" data-i18n="home.popular.title">Most popular courses</h2>
+          <p class="section__subtitle" data-i18n="home.popular.subtitle">Hand-picked by our students this month.</p>
+          <a class="section__link" href="./courses.html" data-i18n="home.popular.all">View all courses</a>
+        </header>
+
+        <div class="popular__filters" role="group" aria-label="Filter popular courses by category" data-i18n-aria-label="home.popular.filterLabel">
+          <button class="chip chip--active" type="button" aria-pressed="true" data-filter="all">All</button>
+<% site.categories.filter(function (c) { return c.slug !== 'mobile'; }).forEach(function (cat) { -%>
+          <button class="chip" type="button" aria-pressed="false" data-filter="<%= cat.slug %>"><%= cat.name %></button>
+<% }); -%>
+        </div>
+
+        <ul class="popular__list course-grid">
+<% [0, 2, 3, 5].forEach(function (i) { -%>
+          <li class="course-grid__item">
+<%- include('src/partials/course-card', { c: site.courses[i], idSuffix: 'popular' }) %>
+          </li>
+<% }); -%>
+        </ul>
+      </div>
+    </section>
+
+    <section class="why section" id="why" aria-labelledby="why-title">
+      <div class="container">
+        <header class="section__header">
+          <p class="section__overline" data-i18n="home.why.overline">Why Learnova</p>
+          <h2 class="section__title" id="why-title" data-i18n="home.why.title">Learning that leads to a job</h2>
+          <p class="section__subtitle" data-i18n="home.why.subtitle">Everything you need to go from the first line of code to your first offer.</p>
+        </header>
+        <ul class="why__list">
+<% site.features.forEach(function (f, i) { -%>
+          <li class="why__item">
+            <article class="feature">
+              <h3 class="feature__title" data-i18n="home.why.feature<%= i + 1 %>.title"><%= f.title %></h3>
+              <p class="feature__text" data-i18n="home.why.feature<%= i + 1 %>.text"><%= f.text %></p>
+            </article>
+          </li>
+<% }); -%>
+        </ul>
+      </div>
+    </section>
+
+    <section class="cta section" aria-labelledby="cta-title">
+      <div class="cta__inner container">
+        <div class="cta__text">
+          <h2 class="cta__title" id="cta-title" data-i18n="home.cta.title">Not sure where to start?</h2>
+          <p class="cta__lead" data-i18n="home.cta.lead">Take a free 5-minute quiz and get a personal learning path.</p>
+        </div>
+        <div class="cta__actions">
+          <a class="button button--primary" href="./courses.html?level=beginner" data-i18n="home.cta.quiz">Take the quiz</a>
+          <a class="button button--secondary" href="./courses.html" data-i18n="home.cta.browse">Browse courses</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<%- include('src/partials/footer') %>
+  <script type="module" src="./src/js/main.js"></script>
 </body>
 </html>

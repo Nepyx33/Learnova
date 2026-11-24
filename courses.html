@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<%- include('src/partials/head', { title: 'All courses', description: 'Browse 180 online IT courses. Filter by category, level, price, rating and duration.' }) %>
+</head>
+<body class="page page--courses">
+<%- include('src/partials/header', { active: 'courses' }) %>
+
+  <main class="main" id="main">
+    <header class="page-header">
+      <div class="page-header__inner container">
+<%- include('src/partials/breadcrumbs', { items: [['Home', './index.html'], ['Courses']] }) %>
+        <h1 class="page-header__title" data-i18n="courses.title">All courses</h1>
+        <p class="page-header__subtitle" data-i18n="courses.subtitle">180 courses in 6 categories</p>
+        <form class="search page-header__search" action="./courses.html" method="get" role="search" aria-label="Search courses" data-i18n-aria-label="search.label">
+          <label class="search__label visually-hidden" for="catalog-search" data-i18n="search.label">Search courses</label>
+          <input class="search__input" id="catalog-search" name="q" type="search" placeholder="Search courses" autocomplete="off" data-i18n-placeholder="search.placeholder" />
+          <button class="search__button button button--primary" type="submit" data-i18n="search.submit">Search</button>
+        </form>
+      </div>
+    </header>
+
+    <div class="catalog container">
+      <aside class="catalog__filters filters" aria-labelledby="filters-title">
+        <button class="filters__toggle button button--secondary" type="button" aria-expanded="false" aria-controls="filters-form" data-i18n="courses.filters.show">Filters</button>
+        <form class="filters__form" id="filters-form" action="./courses.html" method="get">
+          <div class="filters__head">
+            <h2 class="filters__title" id="filters-title" data-i18n="courses.filters.title">Filters</h2>
+            <button class="filters__clear" type="reset" data-i18n="courses.filters.clear">Clear all</button>
+          </div>
+
+          <fieldset class="filters__group">
+            <legend class="filters__legend" data-i18n="courses.filters.category">Category</legend>
+<% site.categories.forEach(function (cat, i) { -%>
+            <div class="checkbox">
+              <input class="checkbox__input" type="checkbox" id="f-cat-<%= cat.slug %>" name="category" value="<%= cat.slug %>"<%= i === 0 || i === 2 ? ' checked' : '' %> />
+              <label class="checkbox__label" for="f-cat-<%= cat.slug %>"><%= cat.name %> <span class="checkbox__count">(<%= cat.count %>)</span></label>
+            </div>
+<% }); -%>
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend class="filters__legend" data-i18n="courses.filters.level">Level</legend>
+<% [['beginner', 'Beginner', 64], ['intermediate', 'Intermediate', 71], ['advanced', 'Advanced', 45]].forEach(function (l, i) { -%>
+            <div class="checkbox">
+              <input class="checkbox__input" type="checkbox" id="f-level-<%= l[0] %>" name="level" value="<%= l[0] %>"<%= i === 0 ? ' checked' : '' %> />
+              <label class="checkbox__label" for="f-level-<%= l[0] %>"><%= l[1] %> <span class="checkbox__count">(<%= l[2] %>)</span></label>
+            </div>
+<% }); -%>
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend class="filters__legend" data-i18n="courses.filters.price">Price</legend>
+            <div class="radio">
+              <input class="radio__input" type="radio" id="f-price-all" name="price" value="all" checked />
+              <label class="radio__label" for="f-price-all">All</label>
+            </div>
+            <div class="radio">
+              <input class="radio__input" type="radio" id="f-price-free" name="price" value="free" />
+              <label class="radio__label" for="f-price-free">Free <span class="checkbox__count">(18)</span></label>
+            </div>
+            <div class="radio">
+              <input class="radio__input" type="radio" id="f-price-paid" name="price" value="paid" />
+              <label class="radio__label" for="f-price-paid">Paid <span class="checkbox__count">(162)</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend class="filters__legend" data-i18n="courses.filters.rating">Rating</legend>
+<% [['4.5', 96], ['4.0', 151], ['3.5', 172]].forEach(function (r) { const id = 'f-rating-' + r[0].replace('.', ''); -%>
+            <div class="radio">
+              <input class="radio__input" type="radio" id="<%= id %>" name="rating" value="<%= r[0] %>" />
+              <label class="radio__label" for="<%= id %>"><%= r[0] %> &amp; up <span class="checkbox__count">(<%= r[1] %>)</span></label>
+            </div>
+<% }); -%>
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend class="filters__legend" data-i18n="courses.filters.duration">Duration</legend>
+<% [['short', 'Under 10 hours', 38], ['medium', '10–25 hours', 89], ['long', '25+ hours', 53]].forEach(function (d) { -%>
+            <div class="checkbox">
+              <input class="checkbox__input" type="checkbox" id="f-duration-<%= d[0] %>" name="duration" value="<%= d[0] %>" />
+              <label class="checkbox__label" for="f-duration-<%= d[0] %>"><%= d[1] %> <span class="checkbox__count">(<%= d[2] %>)</span></label>
+            </div>
+<% }); -%>
+          </fieldset>
+
+          <button class="filters__apply button button--primary" type="submit" data-i18n="courses.filters.apply">Apply filters</button>
+        </form>
+      </aside>
+
+      <section class="catalog__results results" aria-labelledby="results-title">
+        <div class="results__toolbar">
+          <h2 class="results__title" id="results-title"><output class="results__count" aria-live="polite">24</output> <span data-i18n="courses.results.found">courses found</span></h2>
+          <form class="results__sort sort" action="./courses.html" method="get">
+            <label class="sort__label" for="sort-select" data-i18n="courses.sort.label">Sort by</label>
+            <select class="sort__select" id="sort-select" name="sort">
+              <option value="popular" selected data-i18n="courses.sort.popular">Most popular</option>
+              <option value="rating" data-i18n="courses.sort.rating">Highest rated</option>
+              <option value="newest" data-i18n="courses.sort.newest">Newest</option>
+              <option value="price-asc" data-i18n="courses.sort.priceAsc">Price: low to high</option>
+              <option value="price-desc" data-i18n="courses.sort.priceDesc">Price: high to low</option>
+            </select>
+          </form>
+        </div>
+
+        <ul class="results__active active-filters" aria-label="Active filters" data-i18n-aria-label="courses.activeFilters">
+<% ['Frontend', 'Data Science', 'Beginner'].forEach(function (f) { -%>
+          <li class="active-filters__item">
+            <button class="chip chip--active chip--removable" type="button" aria-label="Remove filter: <%= f %>"><%= f %></button>
+          </li>
+<% }); -%>
+        </ul>
+
+        <ul class="results__list course-grid">
+<% [0, 2, 1, 8, 5, 4, 3, 7, 6].forEach(function (i) { -%>
+          <li class="course-grid__item">
+<%- include('src/partials/course-card', { c: site.courses[i], idSuffix: 'catalog' }) %>
+          </li>
+<% }); -%>
+        </ul>
+
+        <nav class="pagination" aria-label="Pagination" data-i18n-aria-label="a11y.pagination">
+          <ul class="pagination__list">
+            <li class="pagination__item"><span class="pagination__link pagination__link--disabled" aria-disabled="true" data-i18n="pagination.prev">Previous</span></li>
+            <li class="pagination__item"><a class="pagination__link pagination__link--current" href="./courses.html?page=1" aria-current="page" aria-label="Page 1">1</a></li>
+            <li class="pagination__item"><a class="pagination__link" href="./courses.html?page=2" aria-label="Page 2">2</a></li>
+            <li class="pagination__item"><a class="pagination__link" href="./courses.html?page=3" aria-label="Page 3">3</a></li>
+            <li class="pagination__item"><span class="pagination__ellipsis" aria-hidden="true">…</span></li>
+            <li class="pagination__item"><a class="pagination__link" href="./courses.html?page=8" aria-label="Page 8">8</a></li>
+            <li class="pagination__item"><a class="pagination__link" href="./courses.html?page=2" rel="next" data-i18n="pagination.next">Next</a></li>
+          </ul>
+        </nav>
+      </section>
+    </div>
+  </main>
+
+<%- include('src/partials/footer') %>
+  <script type="module" src="./src/js/main.js"></script>
+</body>
+</html>
