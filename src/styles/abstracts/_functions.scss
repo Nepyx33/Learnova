@@ -1,6 +1,65 @@
-// _functions.scss
+// =========================================================
+// Functions
+// =========================================================
 @use "sass:math";
+@use "sass:map";
+@use "sass:string";
+@use "variables" as *;
 
-@function rem($px, $base: 16) {
-  @return math.div($px, $base) * 1rem;
+// px -> rem: rem(24) => 1.5rem
+@function rem($px) {
+  @if $px == 0 {
+    @return 0;
+  }
+  @return math.div($px, $font-size-base) * 1rem;
+}
+
+// spacing scale: space(4) => 1rem (16px)
+@function space($key) {
+  @if not map.has-key($spaces, $key) {
+    @error "Unknown space `#{$key}`. Use one of: #{map.keys($spaces)}";
+  }
+  @return rem(map.get($spaces, $key));
+}
+
+// color token as CSS custom property: c("primary") => var(--color-primary)
+@function c($name) {
+  @if not map.has-key($colors, $name) {
+    @error "Unknown color `#{$name}`.";
+  }
+  @return var(--color-#{$name});
+}
+
+// transparent version of a token via CSS color-mix(): tint("primary", 12%)
+@function tint($name, $amount) {
+  @return string.unquote("color-mix(in srgb, #{c($name)} #{$amount}, transparent)");
+}
+
+// mix two tokens: mix-colors("primary", "ink", 80%)
+@function mix-colors($a, $b, $amount: 50%) {
+  @return string.unquote("color-mix(in srgb, #{c($a)} #{$amount}, #{c($b)})");
+}
+
+@function radius($name) {
+  @return rem(map.get($radii, $name));
+}
+
+@function shadow($name) {
+  @return var(--shadow-#{$name});
+}
+
+// breakpoint value: bp("md") => 768px
+@function bp($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`.";
+  }
+  @return map.get($breakpoints, $name);
+}
+
+@function grid-value($bp, $key) {
+  @return map.get(map.get($grid, $bp), $key);
+}
+
+@function z($name) {
+  @return map.get($z-index, $name);
 }

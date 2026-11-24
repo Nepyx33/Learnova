@@ -1,21 +1,223 @@
-// _mixins.scss
-@mixin container($max: 1200px) {
-  width: 100%;
-  max-width: $max;
-  margin-inline: auto;
-  padding-inline: 16px;
-}
+// =========================================================
+// Mixins: breakpoints, layout (container / flex / grid), typography, UI helpers
+// =========================================================
+@use "sass:map";
+@use "sass:list";
+@use "variables" as *;
+@use "functions" as *;
 
-@mixin flex-center($gap: 8px) {
-  display: flex;
-  align-items: center;
-  gap: $gap;
-}
-
-@mixin respond($breakpoint) {
-  @if $breakpoint == md {
-    @media (min-width: 768px) { @content; }
-  } @else if $breakpoint == lg {
-    @media (min-width: 1280px) { @content; }
+// ---- Breakpoints (mobile-first) ----
+@mixin respond($name) {
+  $value: bp($name);
+  @if $value == 0 {
+    @content;
+  } @else {
+    @media (min-width: $value) {
+      @content;
+    }
   }
+}
+
+// below a breakpoint, e.g. phones only: respond-below("md")
+@mixin respond-below($name) {
+  @media (max-width: (bp($name) - 0.02px)) {
+    @content;
+  }
+}
+
+// ---- Container: grid margins 16 / 32 / 80, max 1280 ----
+@mixin container {
+  width: 100%;
+  max-width: rem($container-max);
+  margin-inline: auto;
+  padding-inline: rem(grid-value("xs", margin));
+
+  @include respond("md") {
+    padding-inline: rem(grid-value("md", margin));
+  }
+
+  @include respond("lg") {
+    padding-inline: rem(grid-value("lg", margin));
+  }
+}
+
+// ---- Flex ----
+@mixin flex($direction: row, $align: center, $justify: flex-start, $gap: 0, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+  align-items: $align;
+  justify-content: $justify;
+  @if $gap != 0 {
+    gap: space($gap);
+  }
+}
+
+@mixin flex-center($gap: 0) {
+  @include flex(row, center, center, $gap);
+}
+
+// ---- Grid: equal columns per breakpoint, e.g. grid((xs: 1, md: 2, lg: 4), 6) ----
+@mixin grid($columns: (xs: 1), $gap: 6) {
+  display: grid;
+  gap: space($gap);
+
+  @each $name, $count in $columns {
+    @include respond($name) {
+      grid-template-columns: repeat($count, minmax(0, 1fr));
+    }
+  }
+}
+
+// auto-fill grid with minimum card width
+@mixin grid-auto($min, $gap: 6) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, rem($min)), 1fr));
+  gap: space($gap);
+}
+
+// ---- Typography: @include text("h2") applies the Figma text style on all breakpoints ----
+@mixin text($name) {
+  $style: map.get($text-styles, $name);
+  @if not $style {
+    @error "Unknown text style `#{$name}`.";
+  }
+  $sizes: map.get($style, size);
+  $lines: map.get($style, line);
+
+  @if map.get($style, family) == heading {
+    font-family: $font-heading;
+  } @else {
+    font-family: $font-body;
+  }
+  font-weight: map.get($style, weight);
+  @if map.has-key($style, tracking) {
+    letter-spacing: map.get($style, tracking);
+  }
+  @if map.has-key($style, transform) {
+    text-transform: map.get($style, transform);
+  }
+
+  @each $bp, $size in $sizes {
+    @include respond($bp) {
+      font-size: rem($size);
+      line-height: rem(map.get($lines, $bp));
+    }
+  }
+}
+
+@mixin truncate($lines: 1) {
+  overflow: hidden;
+  @if $lines == 1 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+    line-clamp: $lines;
+  }
+}
+
+// ---- Accessibility ----
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin focus-ring($offset: 2px) {
+  outline: 2px solid c("primary");
+  outline-offset: $offset;
+}
+
+// ---- UI helpers ----
+@mixin reset-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// card-like surface
+@mixin surface($radius: "lg", $padding: null, $border: true, $elevation: null) {
+  background-color: c("surface");
+  border-radius: radius($radius);
+  @if $border {
+    border: 1px solid c("border");
+  }
+  @if $padding {
+    padding: space($padding);
+  }
+  @if $elevation {
+    box-shadow: shadow($elevation);
+  }
+}
+
+@mixin transition($properties...) {
+  $list: ();
+  @each $p in $properties {
+    $list: list.append($list, $p $duration-base $ease-out, comma);
+  }
+  transition: $list;
+}
+
+// form control base (input / select / textarea), Figma "Input"
+@mixin field-control($height: 48) {
+  width: 100%;
+  min-height: rem($height);
+  padding: space(3) space(4);
+  @include text("body");
+  color: c("ink");
+  background-color: c("surface");
+  border: 1px solid c("border");
+  border-radius: radius("md");
+  @include transition(border-color, box-shadow);
+
+  &::placeholder {
+    color: c("subtle");
+  }
+
+  &:hover {
+    border-color: c("subtle");
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: c("primary");
+    box-shadow: shadow("focus");
+  }
+}
+
+// custom arrow for native <select>
+@mixin select-arrow($color: "muted") {
+  padding-right: space(10);
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, c($color) 50%),
+    linear-gradient(135deg, c($color) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+// animation helper (keyframes are defined in base/_animations)
+@mixin animate($name, $duration: $duration-slow, $delay: 0ms) {
+  animation: $name $duration $ease-out $delay both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// gradient cover by category key
+@mixin cover-gradient($key) {
+  $pair: map.get($gradients, $key);
+  background-image: linear-gradient(120deg, list.nth($pair, 1), list.nth($pair, 2));
 }

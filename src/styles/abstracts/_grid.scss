@@ -1,0 +1,54 @@
+// =========================================================
+// Custom grid (bonus): grid-container, grid-row, grid-col with gutters
+// 4 columns (xs) → 8 (md) → 12 (lg), gutters 16 / 24 / 24 from Figma
+// Usage:
+//   .layout { @include grid-row; }
+//   .layout__main { @include grid-col((xs: 4, md: 8, lg: 8)); }
+// =========================================================
+@use "sass:map";
+@use "variables" as *;
+@use "functions" as *;
+@use "mixins" as *;
+
+@mixin grid-container {
+  @include container;
+}
+
+@mixin grid-row($row-gap: null) {
+  display: grid;
+
+  @each $name, $config in $grid {
+    @include respond($name) {
+      grid-template-columns: repeat(map.get($config, columns), minmax(0, 1fr));
+      column-gap: rem(map.get($config, gutter));
+      @if $row-gap {
+        row-gap: space($row-gap);
+      } @else {
+        row-gap: rem(map.get($config, gutter));
+      }
+    }
+  }
+}
+
+// $spans: map of breakpoint → number of columns; missing breakpoints inherit the smaller one.
+// A value of "full" spans the whole row.
+@mixin grid-col($spans: (xs: 4)) {
+  @each $name, $span in $spans {
+    @include respond($name) {
+      @if $span == full {
+        grid-column: 1 / -1;
+      } @else {
+        grid-column: span $span;
+      }
+    }
+  }
+}
+
+// start column (offset) per breakpoint
+@mixin grid-start($starts) {
+  @each $name, $start in $starts {
+    @include respond($name) {
+      grid-column-start: $start;
+    }
+  }
+}
