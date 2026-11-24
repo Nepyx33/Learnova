@@ -4,6 +4,7 @@
 // Usage:
 //   .layout { @include grid-row; }
 //   .layout__main { @include grid-col((xs: 4, md: 8, lg: 8)); }
+//   .layout__aside { @include grid-col((xs: 4, lg: 4), (lg: 9)); } // with start column
 // =========================================================
 @use "sass:map";
 @use "variables" as *;
@@ -30,25 +31,24 @@
   }
 }
 
-// $spans: map of breakpoint → number of columns; missing breakpoints inherit the smaller one.
-// A value of "full" spans the whole row.
-@mixin grid-col($spans: (xs: 4)) {
-  @each $name, $span in $spans {
-    @include respond($name) {
-      @if $span == full {
-        grid-column: 1 / -1;
-      } @else {
-        grid-column: span $span;
-      }
+// $spans: map of breakpoint → number of columns ("full" spans the whole row).
+// $starts (optional): map of breakpoint → start column, e.g. (lg: 6) => grid-column: 6 / span N
+@mixin grid-col($spans: (xs: 4), $starts: ()) {
+  $current-span: 1;
+  @each $name, $config in $grid {
+    @if map.has-key($spans, $name) {
+      $current-span: map.get($spans, $name);
     }
-  }
-}
-
-// start column (offset) per breakpoint
-@mixin grid-start($starts) {
-  @each $name, $start in $starts {
-    @include respond($name) {
-      grid-column-start: $start;
+    @if map.has-key($spans, $name) or map.has-key($starts, $name) {
+      @include respond($name) {
+        @if $current-span == full {
+          grid-column: 1 / -1;
+        } @else if map.has-key($starts, $name) {
+          grid-column: #{map.get($starts, $name)} / span #{$current-span};
+        } @else {
+          grid-column: span $current-span;
+        }
+      }
     }
   }
 }

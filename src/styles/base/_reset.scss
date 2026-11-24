@@ -17,6 +17,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: clip; // no horizontal scroll on phones
 }
 
 h1,
