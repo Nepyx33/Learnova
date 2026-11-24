@@ -1,0 +1,36 @@
+@use "../abstracts" as *;
+
+.aside-card {
+  @include surface("xl", 6);
+  display: grid;
+  gap: space(4);
+
+  &__title {
+    @include text("h4");
+  }
+
+  &__chips {
+    @include reset-list;
+    @include flex(row, center, flex-start, 2, wrap);
+  }
+
+  &__list {
+    @include reset-list;
+    display: grid;
+    gap: space(3);
+  }
+
+  &__item {
+    @include text("small");
+    padding-left: space(6);
+    position: relative;
+
+    &::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: c("success");
+      font-weight: 700;
+    }
+  }
+}

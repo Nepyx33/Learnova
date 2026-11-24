@@ -1,0 +1,18 @@
+// =========================================================
+// Light theme: SCSS token maps → CSS custom properties
+// (components use c("name") = var(--color-name), so a dark theme
+// only needs another set of variables)
+// =========================================================
+@use "../abstracts" as *;
+
+:root {
+  @each $name, $value in $colors {
+    --color-#{$name}: #{$value};
+  }
+
+  @each $name, $value in $shadows {
+    --shadow-#{$name}: #{$value};
+  }
+
+  color-scheme: light;
+}

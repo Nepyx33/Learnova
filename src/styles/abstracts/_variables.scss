@@ -1,14 +1,121 @@
-// _variables.scss
-$u-space-1: 4px;
-$u-space-2: 8px;
-$u-space-3: 12px;
-$u-space-4: 16px;
-$u-space-5: 24px;
+// =========================================================
+// Design tokens from Figma (Lab 1 design system "Learnova")
+// =========================================================
 
-$u-font-base: 16px;
-$u-font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+// ---- Colors: 5 core + supporting + semantic ----
+$colors: (
+  "primary": #4f46e5,
+  "ink": #14162b,
+  "bg": #f6f7fb,
+  "surface": #ffffff,
+  "accent": #ffb020,
+  "primary-hover": #4338ca,
+  "primary-soft": #eef0ff,
+  "primary-line": #c7cbff,
+  "muted": #5d6178,
+  "subtle": #8e92a8,
+  "on-dark": #b8bbd1,
+  "border": #e3e5ee,
+  "border-dark": #2e3150,
+  "success": #15803d,
+  "success-soft": #e7f6ec,
+  "warning": #b45309,
+  "warning-soft": #fff4de,
+  "error": #dc2626,
+  "error-soft": #fdecec
+);
 
-$u-color-bg: #0f172a;
-$u-color-text: #e2e8f0;
-$u-color-accent: #38bdf8;
-$u-color-muted: #94a3b8;
+// Course cover gradients (Figma: Gradient/*)
+$gradients: (
+  "frontend": (#4f46e5, #8b5cf6),
+  "backend": (#0f766e, #2dd4bf),
+  "data-science": (#2563eb, #22d3ee),
+  "devops": (#1e293b, #64748b),
+  "mobile": (#db2777, #fb7185),
+  "design": (#f59e0b, #f97316)
+);
+
+// ---- Typography ----
+$font-heading: "Manrope", "Inter", system-ui, sans-serif;
+$font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+$font-size-base: 16; // px, 1rem
+
+// Text styles from Figma. size / line are in px: (xs: mobile, lg: desktop ≥1280)
+$text-styles: (
+  "display":  (family: heading, weight: 800, size: (xs: 32, md: 44, lg: 56), line: (xs: 40, md: 52, lg: 64), tracking: -0.02em),
+  "h1":       (family: heading, weight: 700, size: (xs: 28, lg: 40), line: (xs: 36, lg: 48), tracking: -0.015em),
+  "h2":       (family: heading, weight: 700, size: (xs: 22, md: 28, lg: 32), line: (xs: 30, md: 36, lg: 40), tracking: -0.01em),
+  "h3":       (family: heading, weight: 700, size: (xs: 20, lg: 24), line: (xs: 28, lg: 32), tracking: -0.005em),
+  "h4":       (family: heading, weight: 700, size: (xs: 18), line: (xs: 26)),
+  "body-l":   (family: body, weight: 400, size: (xs: 16, lg: 18), line: (xs: 24, lg: 28)),
+  "body":     (family: body, weight: 400, size: (xs: 16), line: (xs: 24)),
+  "body-m":   (family: body, weight: 500, size: (xs: 16), line: (xs: 24)),
+  "small":    (family: body, weight: 400, size: (xs: 14), line: (xs: 20)),
+  "small-m":  (family: body, weight: 500, size: (xs: 14), line: (xs: 20)),
+  "small-b":  (family: body, weight: 600, size: (xs: 14), line: (xs: 20)),
+  "caption":  (family: body, weight: 500, size: (xs: 12), line: (xs: 16)),
+  "overline": (family: body, weight: 700, size: (xs: 12), line: (xs: 16), tracking: 0.08em, transform: uppercase),
+  "button":   (family: body, weight: 600, size: (xs: 16), line: (xs: 24)),
+  "button-s": (family: body, weight: 600, size: (xs: 14), line: (xs: 20)),
+  "price":    (family: heading, weight: 800, size: (xs: 22), line: (xs: 28), tracking: -0.005em),
+  "price-l":  (family: heading, weight: 800, size: (xs: 28, lg: 32), line: (xs: 36, lg: 40), tracking: -0.01em)
+);
+
+// ---- Spacing (multiples of 4) ----
+$spaces: (
+  0: 0,
+  1: 4,
+  2: 8,
+  3: 12,
+  4: 16,
+  5: 20,
+  6: 24,
+  8: 32,
+  10: 40,
+  12: 48,
+  16: 64,
+  20: 80
+);
+
+// ---- Radius ----
+$radii: (
+  "sm": 6,
+  "md": 10,
+  "lg": 16,
+  "xl": 24,
+  "full": 999
+);
+
+// ---- Shadows (Figma effect styles) ----
+$shadows: (
+  "card": (0 1px 2px rgba(20, 22, 43, 0.04), 0 4px 16px rgba(20, 22, 43, 0.06)),
+  "hover": (0 4px 8px rgba(20, 22, 43, 0.06), 0 16px 32px rgba(79, 70, 229, 0.16)),
+  "pop": (0 12px 40px rgba(20, 22, 43, 0.18)),
+  "focus": (0 0 0 4px rgba(79, 70, 229, 0.2))
+);
+
+// ---- Breakpoints (mobile-first): xs 360–767, md ≥768, lg ≥1280 ----
+$breakpoints: (
+  "xs": 0,
+  "md": 768px,
+  "lg": 1280px
+);
+
+// ---- Grid (Figma layout grids) ----
+$grid: (
+  "xs": (columns: 4, gutter: 16, margin: 16),
+  "md": (columns: 8, gutter: 24, margin: 32),
+  "lg": (columns: 12, gutter: 24, margin: 80)
+);
+$container-max: 1280; // px, content = 1280 - 2 * 80 = 1120
+
+// ---- Motion ----
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$duration-fast: 150ms;
+$duration-base: 250ms;
+$duration-slow: 500ms;
+
+$z-index: (
+  "header": 100,
+  "skip-link": 200
+);

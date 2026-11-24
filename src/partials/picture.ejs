@@ -1,13 +1,14 @@
 <%
   // Responsive image: WebP + JPEG fallback, both with srcset.
-  // Params: name (path inside images/, without size suffix), alt, widths, sizes, width, height, cls, loading
+  // Params: name (path inside images/, without size suffix), alt, widths, sizes, width, height, block, loading
+  // BEM: renders <picture class="{block}__picture"> and <img class="{block}__img">
   const _widths = typeof widths !== 'undefined' ? widths : [400, 800];
   const _sizes = typeof sizes !== 'undefined' ? sizes : '100vw';
   const _loading = typeof loading !== 'undefined' ? loading : 'lazy';
-  const _cls = typeof cls !== 'undefined' ? cls : 'picture';
+  const _block = typeof block !== 'undefined' ? block : 'media';
   const set = (ext) => _widths.map((w) => site.IMG + '/' + name + '-' + w + '.' + ext + ' ' + w + 'w').join(', ');
 -%>
-<picture class="<%= _cls %>">
+<picture class="<%= _block %>__picture">
   <source type="image/webp" srcset="<%= set('webp') %>" sizes="<%= _sizes %>" />
-  <img class="<%= _cls %>__img" src="<%= site.IMG %>/<%= name %>-<%= _widths[0] %>.jpg" srcset="<%= set('jpg') %>" sizes="<%= _sizes %>" alt="<%= alt %>" width="<%= width %>" height="<%= height %>" loading="<%= _loading %>" decoding="async"<%- typeof itemprop !== 'undefined' ? ' itemprop="' + itemprop + '"' : '' %> />
+  <img class="<%= _block %>__img" src="<%= site.IMG %>/<%= name %>-<%= _widths[0] %>.jpg" srcset="<%= set('jpg') %>" sizes="<%= _sizes %>" alt="<%= alt %>" width="<%= width %>" height="<%= height %>" loading="<%= _loading %>" decoding="async"<%- typeof itemprop !== 'undefined' ? ' itemprop="' + itemprop + '"' : '' %> />
 </picture>

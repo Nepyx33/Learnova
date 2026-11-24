@@ -1,10 +1,52 @@
-// Main SCSS entry
-@use "abstracts/variables";
-@use "abstracts/functions";
-@use "abstracts/mixins";
+// =========================================================
+// Learnova — SCSS entry point (7-1 architecture)
+// =========================================================
+
+// 1. Abstracts (no CSS output): tokens, functions, mixins, grid — used by every partial via @use "../abstracts"
+// 2. Vendors
+@use "vendors/normalize";
+
+// 3. Themes (CSS custom properties)
+@use "themes/light";
+
+// 4. Base
 @use "base/reset";
 @use "base/typography";
+@use "base/accessibility";
+@use "base/animations";
+
+// 5. Layout
 @use "layout/grid";
+@use "layout/main";
 @use "layout/header";
 @use "layout/footer";
+
+// 6. Components
+@use "components/button";
+@use "components/chip";
+@use "components/badge";
+@use "components/logo";
+@use "components/nav";
+@use "components/search";
+@use "components/breadcrumbs";
+@use "components/course-card";
+@use "components/category-card";
+@use "components/feature";
+@use "components/stats";
+@use "components/form";
+@use "components/plan";
+@use "components/pagination";
+@use "components/stepper";
+@use "components/module";
+@use "components/review";
+@use "components/aside-card";
+
+// 7. Pages
 @use "pages/home";
+@use "pages/courses";
+@use "pages/course";
+@use "pages/enrollment";
+
+// Utilities and print last, so they win
+@use "base/utilities";
+@use "base/print";

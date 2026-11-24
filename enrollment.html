@@ -49,7 +49,7 @@
           </div>
         </fieldset>
 
-        <fieldset class="enroll-form__group plans">
+        <fieldset class="enroll-form__group">
           <legend class="enroll-form__legend" data-i18n="enroll.plan.title">Choose your plan</legend>
           <p class="enroll-form__hint" data-i18n="enroll.plan.hint">You can upgrade to the mentor plan at any time.</p>
           <div class="plan">
@@ -116,7 +116,7 @@
       <aside class="enrollment__summary summary" aria-labelledby="summary-title">
         <h2 class="summary__title" id="summary-title" data-i18n="enroll.summary.title">Order summary</h2>
         <div class="summary__course">
-          <%- include('src/partials/picture', { name: 'covers/frontend', alt: '', widths: [400, 800], sizes: '88px', width: 400, height: 226, cls: 'summary__picture' }) %>
+          <%- include('src/partials/picture', { name: 'covers/frontend', alt: '', widths: [400, 800], sizes: '88px', width: 400, height: 226, block: 'summary' }) %>
           <p class="summary__course-title"><a href="./course-details.html?id=<%= c.id %>"><%= c.title %></a></p>
           <p class="summary__course-meta"><%= c.instructor %> · <%= c.hours %> h</p>
         </div>

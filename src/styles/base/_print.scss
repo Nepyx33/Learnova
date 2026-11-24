@@ -1,0 +1,78 @@
+// =========================================================
+// Print styles
+// =========================================================
+@use "../abstracts" as *;
+
+@media print {
+  :root {
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-ink: #000000;
+    --color-muted: #333333;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #000;
+    background: #fff;
+  }
+
+  .skip-link,
+  .header__nav,
+  .header__actions,
+  .header__menu-toggle,
+  .footer__nav,
+  .search,
+  .filters,
+  .sort,
+  .pagination,
+  .course-card__bookmark,
+  .button,
+  .promo,
+  .hero__visual,
+  .purchase__picture,
+  picture {
+    display: none !important;
+  }
+
+  .hero,
+  .course-hero,
+  .cta,
+  .footer {
+    color: #000 !important;
+    background: none !important;
+  }
+
+  .course-hero *,
+  .cta *,
+  .footer * {
+    color: #000 !important;
+  }
+
+  .course-card,
+  .feature,
+  .review,
+  .module,
+  .aside-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #999 !important;
+  }
+
+  a[href^="http"]::after,
+  a[href^="mailto:"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+  }
+
+  .module {
+    display: block;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+}

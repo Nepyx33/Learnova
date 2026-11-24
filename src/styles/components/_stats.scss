@@ -1,0 +1,32 @@
+@use "../abstracts" as *;
+
+.stats {
+  @include flex(row, flex-start, flex-start, 4);
+
+  @include respond("md") {
+    gap: space(10);
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column-reverse; // value above label, markup keeps dt → dd order
+    flex: 1;
+
+    @include respond("md") {
+      flex: none;
+    }
+  }
+
+  &__value {
+    @include text("price-l");
+  }
+
+  &__label {
+    @include text("caption");
+    color: c("muted");
+
+    @include respond("md") {
+      @include text("small");
+    }
+  }
+}

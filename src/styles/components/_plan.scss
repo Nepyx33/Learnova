@@ -1,0 +1,72 @@
+// Plan option (Figma: Plan option — Selected False / True). Native radio + styled label.
+@use "../abstracts" as *;
+
+.plan {
+  position: relative;
+
+  &__input {
+    @include visually-hidden;
+  }
+
+  &__label {
+    display: grid;
+    grid-template-columns: rem(20) 1fr auto;
+    column-gap: space(3);
+    row-gap: space(1);
+    height: 100%;
+    padding: space(5);
+    cursor: pointer;
+    @include surface("lg");
+    @include transition(border-color, background-color, box-shadow);
+
+    // radio circle
+    &::before {
+      content: "";
+      grid-row: 1 / span 2;
+      width: rem(20);
+      height: rem(20);
+      margin-top: rem(3);
+      background-color: c("surface");
+      border: 1.5px solid c("subtle");
+      border-radius: radius("full");
+      @include transition(border-width, border-color);
+    }
+
+    &:hover {
+      border-color: c("primary-line");
+    }
+  }
+
+  &__name {
+    @include text("h4");
+  }
+
+  &__description {
+    grid-column: 2;
+    @include text("small");
+    color: c("muted");
+  }
+
+  &__price {
+    grid-column: 3;
+    grid-row: 1;
+    @include text("price");
+  }
+
+  &__input:checked + &__label {
+    background-color: c("primary-soft");
+    border: 2px solid c("primary");
+
+    &::before {
+      border: 6px solid c("primary");
+    }
+
+    .plan__price {
+      color: c("primary");
+    }
+  }
+
+  &__input:focus-visible + &__label {
+    @include focus-ring;
+  }
+}

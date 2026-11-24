@@ -1,0 +1,67 @@
+// Enrollment progress: 1 Course → 2 Your details → 3 Confirmation
+@use "../abstracts" as *;
+
+.stepper {
+  @include reset-list;
+  @include flex(row, center, flex-start, 2);
+  counter-reset: step;
+  margin-top: space(2);
+
+  &__step {
+    @include flex(row, center, flex-start, 2);
+    flex: 1;
+    @include text("caption");
+    color: c("muted");
+    counter-increment: step;
+
+    &::before {
+      content: counter(step);
+      @include flex-center;
+      flex-shrink: 0;
+      width: rem(32);
+      height: rem(32);
+      @include text("small-b");
+      color: c("muted");
+      background-color: c("surface");
+      border: 1.5px solid c("border");
+      border-radius: radius("full");
+    }
+
+    // connector line
+    &:not(:last-child)::after {
+      content: "";
+      flex: 1;
+      height: 2px;
+      min-width: space(4);
+      background-color: c("border");
+      border-radius: 1px;
+    }
+
+    &--done,
+    &--current {
+      color: c("ink");
+
+      &::before {
+        color: c("surface");
+        background-color: c("primary");
+        border-color: c("primary");
+      }
+    }
+
+    &--done::before {
+      content: "✓";
+    }
+
+    &--done:not(:last-child)::after {
+      background-color: c("primary");
+    }
+
+    @include respond("md") {
+      @include text("small-b");
+    }
+  }
+
+  @include respond("md") {
+    max-width: rem(640);
+  }
+}

@@ -1,4 +1,73 @@
-// _footer.scss
-@use "../abstracts/mixins" as *;
+@use "../abstracts" as *;
 
-.u-footer { @include container(); padding: 24px 0; border-top: 1px solid rgba(255,255,255,.1); margin-top: 40px; }
+.footer {
+  color: c("on-dark");
+  background-color: c("ink");
+
+  &__inner {
+    @include grid-row(8);
+    padding-block: space(10) space(6);
+
+    @include respond("lg") {
+      padding-block: space(16) space(8);
+    }
+  }
+
+  &__brand {
+    @include grid-col((xs: 4, md: 8, lg: 4));
+    display: grid;
+    gap: space(4);
+    align-content: start;
+  }
+
+  &__text {
+    @include text("small");
+    max-width: rem(360);
+  }
+
+  &__nav {
+    @include grid-col((xs: 4, md: 8, lg: 7));
+    @include grid-start((lg: 6));
+    @include grid((xs: 2, md: 3), 6);
+  }
+
+  &__heading {
+    @include text("overline");
+    margin-bottom: space(3);
+    color: c("surface");
+  }
+
+  &__list {
+    @include reset-list;
+    display: grid;
+    gap: space(3);
+  }
+
+  &__link {
+    @include text("small");
+    color: c("on-dark");
+    text-decoration: none;
+
+    &:hover {
+      color: c("surface");
+      text-decoration: underline;
+    }
+  }
+
+  &__bottom {
+    @include grid-col((xs: full));
+    @include flex(column, flex-start, space-between, 2);
+    padding-top: space(6);
+    border-top: 1px solid c("border-dark");
+
+    @include respond("md") {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__copy,
+  &__author {
+    color: c("on-dark");
+  }
+}

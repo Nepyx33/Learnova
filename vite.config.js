@@ -39,6 +39,11 @@ export default defineConfig({
   base: "./",
   root: ".",
   plugins: [ejsPages()],
+  css: {
+    preprocessorOptions: {
+      scss: { api: "modern" }
+    }
+  },
   server: { port: 5173, open: true },
   preview: { port: 4173 },
   build: {

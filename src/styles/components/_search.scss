@@ -1,0 +1,51 @@
+// Search bar (Figma: Search bar — Large / Compact)
+@use "../abstracts" as *;
+
+.search {
+  @include flex(row, center, flex-start, 2);
+  padding: space(1);
+  padding-left: space(4);
+  background-color: c("surface");
+  border: 1px solid c("border");
+  border-radius: radius("lg");
+  @include transition(border-color, box-shadow);
+
+  &::before {
+    // magnifier icon drawn with CSS
+    content: "";
+    flex-shrink: 0;
+    width: rem(16);
+    height: rem(16);
+    border: 2px solid c("subtle");
+    border-radius: 50%;
+    box-shadow: 5px 5px 0 -3.5px c("subtle");
+  }
+
+  &:focus-within {
+    border-color: c("primary");
+    box-shadow: shadow("focus");
+  }
+
+  &__input {
+    flex: 1;
+    min-width: 0;
+    min-height: rem(40);
+    padding: 0;
+    @include text("body");
+    background: transparent;
+    border: 0;
+
+    &::placeholder {
+      color: c("subtle");
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__button {
+    min-height: rem(40);
+    padding-inline: space(4);
+  }
+}

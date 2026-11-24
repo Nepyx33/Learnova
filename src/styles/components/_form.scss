@@ -1,0 +1,93 @@
+// Form controls (Figma: Input, Select, Checkbox, Plan option)
+@use "../abstracts" as *;
+
+.field {
+  display: grid;
+  gap: space(2);
+
+  &__label {
+    @include text("small-m");
+  }
+
+  &__input,
+  &__select,
+  &__textarea {
+    @include field-control;
+  }
+
+  &__input:user-invalid,
+  &__textarea:user-invalid {
+    border-color: c("error");
+  }
+
+  &__select {
+    @include select-arrow;
+  }
+
+  &__textarea {
+    min-height: rem(112);
+    resize: vertical;
+  }
+
+  &__help {
+    @include text("caption");
+    color: c("muted");
+  }
+}
+
+// checkbox & radio share the same structure: input + label
+.checkbox,
+.radio {
+  @include flex(row, flex-start, flex-start, 3);
+
+  &__input {
+    flex-shrink: 0;
+    width: rem(20);
+    height: rem(20);
+    margin: rem(1) 0 0;
+    appearance: none;
+    background-color: c("surface");
+    border: 1.5px solid c("subtle");
+    cursor: pointer;
+    @include transition(background-color, border-color, box-shadow);
+
+    &:hover {
+      border-color: c("primary");
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+
+  &__label {
+    @include text("small");
+    cursor: pointer;
+  }
+
+  &__count {
+    color: c("subtle");
+  }
+}
+
+.checkbox__input {
+  border-radius: radius("sm");
+
+  &:checked {
+    background-color: c("primary");
+    border-color: c("primary");
+    // check mark
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+    background-position: center;
+    background-size: 14px;
+    background-repeat: no-repeat;
+  }
+}
+
+.radio__input {
+  border-radius: radius("full");
+
+  &:checked {
+    border: 6px solid c("primary");
+  }
+}

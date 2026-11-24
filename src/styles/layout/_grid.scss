@@ -1,4 +1,26 @@
-// _grid.scss
-@use "../abstracts/mixins" as *;
+// =========================================================
+// Layout grid: container + generated .row / .col-{bp}-{n} classes
+// built with the custom grid mixins (abstracts/_grid.scss)
+// =========================================================
+@use "sass:map";
+@use "../abstracts" as *;
 
-.container { @include container(); }
+.container {
+  @include grid-container;
+}
+
+.row {
+  @include grid-row;
+}
+
+@each $name, $config in $grid {
+  @for $i from 1 through map.get($config, columns) {
+    .col-#{$name}-#{$i} {
+      @include grid-col(($name: $i));
+    }
+  }
+}
+
+.col-full {
+  grid-column: 1 / -1;
+}

@@ -1,0 +1,46 @@
+// Level badge + tag (Figma: Level badge, Tag)
+@use "sass:list";
+@use "../abstracts" as *;
+
+$badge-variants: (
+  "beginner": ("success-soft", "success"),
+  "intermediate": ("warning-soft", "warning"),
+  "advanced": ("error-soft", "error")
+);
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: space(1) space(2);
+  @include text("caption");
+  border-radius: radius("sm");
+
+  @each $name, $pair in $badge-variants {
+    &--#{$name} {
+      color: c(list.nth($pair, 2));
+      background-color: c(list.nth($pair, 1));
+    }
+  }
+}
+
+$tag-variants: (
+  "bestseller": ("accent", "ink"),
+  "new": ("primary", "surface"),
+  "free": ("success", "surface")
+);
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: space(1) space(3);
+  @include text("overline");
+  font-size: rem(11);
+  border-radius: radius("full");
+
+  @each $name, $pair in $tag-variants {
+    &--#{$name} {
+      color: c(list.nth($pair, 2));
+      background-color: c(list.nth($pair, 1));
+    }
+  }
+}
