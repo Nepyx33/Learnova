@@ -39,10 +39,12 @@ jobs:
 
       - name: Build every lab tag into its own folder
         run: |
-          for tag in $(git tag -l 'lab*' | sort); do
-            echo "Building $tag"
-            git worktree add --force "../build-$tag" "$tag"
-            (cd "../build-$tag" && npm install && npx vite build --outDir "$GITHUB_WORKSPACE/site/$tag" --emptyOutDir)
+          # tags lab2 / Lab2 / LAB2 ... -> folder /lab2/
+          for tag in $(git tag -l '[Ll][Aa][Bb]*' | sort -u); do
+            dir=$(echo "$tag" | tr '[:upper:]' '[:lower:]')
+            echo "Building $tag -> /$dir/"
+            git worktree add --force "../build-$dir" "$tag"
+            (cd "../build-$dir" && npm install && npx vite build --outDir "$GITHUB_WORKSPACE/site/$dir" --emptyOutDir)
           done
 
       - uses: actions/configure-pages@v5
