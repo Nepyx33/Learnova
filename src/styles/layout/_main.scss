@@ -1,0 +1,115 @@
+@use "../abstracts" as *;
+
+.main {
+  display: block;
+}
+
+// generic page section: vertical rhythm 40 / 64 / 80
+.section {
+  padding-block: space(10);
+
+  @include respond("md") {
+    padding-block: space(16);
+  }
+
+  @include respond("lg") {
+    padding-block: space(20);
+  }
+
+  &__header {
+    display: grid;
+    gap: space(2);
+    margin-bottom: space(6);
+
+    @include respond("md") {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      column-gap: space(6);
+      margin-bottom: space(8);
+    }
+  }
+
+  &__overline {
+    @include text("overline");
+    color: c("primary");
+  }
+
+  &__title {
+    @include text("h2");
+  }
+
+  &__subtitle {
+    @include text("body");
+    color: c("muted");
+  }
+
+  &__overline,
+  &__title,
+  &__subtitle {
+    @include respond("md") {
+      grid-column: 1;
+    }
+  }
+
+  &__link {
+    @include text("small-b");
+    justify-self: start;
+    text-decoration: none;
+
+    &::after {
+      content: " →";
+    }
+
+    @include respond("md") {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+      align-self: end;
+    }
+  }
+}
+
+// page header used on Courses and Enrollment
+.page-header {
+  background-color: c("surface");
+  border-bottom: 1px solid c("border");
+
+  &__inner {
+    display: grid;
+    gap: space(3);
+    padding-block: space(6) space(5);
+
+    @include respond("md") {
+      grid-template-columns: 1fr auto;
+      column-gap: space(6);
+      padding-block: space(10) space(8);
+    }
+  }
+
+  &__inner > * {
+    grid-column: 1 / -1;
+  }
+
+  &__title {
+    @include text("h1");
+  }
+
+  &__subtitle {
+    color: c("muted");
+  }
+
+  &__title,
+  &__subtitle {
+    @include respond("md") {
+      grid-column: 1;
+    }
+  }
+
+  &__search {
+    @include respond("md") {
+      grid-column: 2;
+      grid-row: 2 / span 2;
+      align-self: end;
+      width: rem(360);
+    }
+  }
+}

@@ -1,0 +1,71 @@
+// =========================================================
+// Animation system: keyframes appear / fade / slide + helper classes
+// =========================================================
+@use "../abstracts" as *;
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(rem(16)) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateX(rem(-24));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-appear {
+  @include animate(appear);
+}
+
+.anim-fade {
+  @include animate(fade);
+}
+
+.anim-slide {
+  @include animate(slide);
+}
+
+// children appear one after another
+.anim-stagger > * {
+  @include animate(appear);
+
+  @for $i from 1 through 9 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 60}ms;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

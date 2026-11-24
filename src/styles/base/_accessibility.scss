@@ -1,0 +1,28 @@
+@use "../abstracts" as *;
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+.skip-link {
+  position: absolute;
+  top: space(2);
+  left: space(2);
+  z-index: z("skip-link");
+  padding: space(2) space(4);
+  @include text("small-b");
+  color: c("surface");
+  background-color: c("ink");
+  border-radius: radius("md");
+  transform: translateY(-200%);
+  @include transition(transform);
+
+  &:focus-visible {
+    transform: translateY(0);
+    color: c("surface");
+  }
+}

@@ -1,0 +1,73 @@
+// =========================================================
+// Utility classes: spacing and visibility (generated from tokens)
+// =========================================================
+@use "sass:map";
+@use "../abstracts" as *;
+
+// spacing: .u-mt-4, .u-mb-6, .u-my-8, .u-p-4, .u-px-2, .u-gap-3 ...
+$spacing-props: (
+  "m": margin,
+  "mt": margin-top,
+  "mb": margin-bottom,
+  "my": margin-block,
+  "mx": margin-inline,
+  "p": padding,
+  "pt": padding-top,
+  "pb": padding-bottom,
+  "py": padding-block,
+  "px": padding-inline,
+  "gap": gap
+);
+
+@each $abbr, $prop in $spacing-props {
+  @each $key, $value in $spaces {
+    .u-#{$abbr}-#{$key} {
+      #{$prop}: space($key) !important;
+    }
+  }
+}
+
+.u-mx-auto {
+  margin-inline: auto !important;
+}
+
+// visibility
+.u-hidden {
+  display: none !important;
+}
+
+.u-sr-only {
+  @include visually-hidden;
+}
+
+.u-invisible {
+  visibility: hidden !important;
+}
+
+// hide only on a breakpoint range: .u-hide-xs (phones), .u-hide-md (tablets), .u-hide-lg (desktop)
+.u-hide-xs {
+  @include respond-below("md") {
+    display: none !important;
+  }
+}
+
+.u-hide-md {
+  @media (min-width: bp("md")) and (max-width: (bp("lg") - 0.02px)) {
+    display: none !important;
+  }
+}
+
+.u-hide-lg {
+  @include respond("lg") {
+    display: none !important;
+  }
+}
+
+// text helpers
+.u-text-center {
+  text-align: center !important;
+}
+
+.u-text-muted {
+  color: c("muted") !important;
+}

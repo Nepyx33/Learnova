@@ -1,6 +1,44 @@
-// _typography.scss
-@use "../abstracts/functions" as *;
+@use "../abstracts" as *;
 
-h1 { font-size: rem(32); }
-h2 { font-size: rem(24); }
-p  { font-size: rem(16); line-height: 1.6; }
+body {
+  @include text("body");
+  color: c("ink");
+  background-color: c("bg");
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $font-heading;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: c("primary");
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  @include transition(color);
+
+  &:hover {
+    color: c("primary-hover");
+  }
+}
+
+small {
+  font-size: rem(12);
+}
+
+strong {
+  font-weight: 600;
+}
+
+s {
+  text-decoration-thickness: 1px;
+}
