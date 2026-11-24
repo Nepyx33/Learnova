@@ -1,23 +1,192 @@
-// _home.scss
-@use "../abstracts/mixins" as *;
+// Home page: hero, categories, popular courses, features, call to action
+@use "../abstracts" as *;
 
-.home {
-  @include container();
-  padding-block: 24px;
+.hero {
+  background-color: c("surface");
 
-  &__title { margin-bottom: 16px; }
-  &__grid {
+  &__inner {
+    @include grid-row(8);
+    align-items: center;
+    padding-block: space(8) space(10);
+
+    @include respond("lg") {
+      padding-block: space(16) space(20);
+    }
+  }
+
+  &__content {
+    @include grid-col((xs: 4, md: 8, lg: 6));
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    @include respond(md) { grid-template-columns: repeat(2, 1fr); }
-    @include respond(lg) { grid-template-columns: repeat(3, 1fr); }
+    gap: space(5);
+    @include animate(slide);
+
+    @include respond("lg") {
+      gap: space(6);
+    }
+  }
+
+  &__eyebrow {
+    @include flex(row, center, flex-start, 2);
+    justify-self: start;
+    padding: space(1) space(3) space(1) space(1);
+    @include text("small-m");
+    color: c("primary");
+    background-color: c("primary-soft");
+    border-radius: radius("full");
+  }
+
+  &__title {
+    @include text("display");
+  }
+
+  &__lead {
+    @include text("body-l");
+    color: c("muted");
+  }
+
+  &__search {
+    box-shadow: shadow("card");
+
+    @include respond("md") {
+      padding: space(2);
+      padding-left: space(5);
+
+      .search__button {
+        min-height: rem(48);
+        padding-inline: space(6);
+      }
+    }
+  }
+
+  &__popular {
+    @include flex(row, center, flex-start, 2, wrap);
+  }
+
+  &__popular-label {
+    @include text("small");
+    color: c("muted");
+  }
+
+  &__popular-list {
+    @include reset-list;
+    @include flex(row, center, flex-start, 2, wrap);
+  }
+
+  &__stats {
+    padding-top: space(2);
+  }
+
+  &__visual {
+    @include grid-col((xs: 4, md: 8, lg: 6));
+    margin: 0;
+    @include animate(appear, $duration-slow, 150ms);
+  }
+
+  &__picture,
+  &__img {
+    width: 100%;
+  }
+
+  &__img {
+    border-radius: radius("xl");
+    box-shadow: shadow("pop");
   }
 }
 
-.card {
-  padding: 16px;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 8px;
-  background: rgba(255,255,255,.02);
+.categories {
+  &__list {
+    @include reset-list;
+    @include grid((xs: 2, md: 3, lg: 6), 4);
+
+    @include respond("lg") {
+      gap: space(6);
+    }
+  }
+}
+
+.popular {
+  padding-top: 0;
+
+  &__filters {
+    @include flex(row, center, flex-start, 2);
+    margin-bottom: space(6);
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: space(1);
+  }
+}
+
+.why {
+  background-color: c("surface");
+
+  &__list {
+    @include reset-list;
+    @include grid((xs: 1, md: 3), 6);
+  }
+}
+
+.cta {
+  // .cta__inner is also a .container: the dark box is drawn by ::before inside the container margins
+  &__inner {
+    position: relative;
+    isolation: isolate;
+    @include flex(column, flex-start, flex-start, 6);
+    padding-block: space(8);
+    color: c("surface");
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 rem(grid-value("xs", margin));
+      z-index: -1;
+      background:
+        radial-gradient(circle at 90% 0%, tint("primary", 55%) 0, transparent 50%),
+        c("ink");
+      border-radius: radius("xl");
+
+      @include respond("md") {
+        inset-inline: rem(grid-value("md", margin));
+      }
+
+      @include respond("lg") {
+        inset-inline: rem(grid-value("lg", margin));
+      }
+    }
+
+    > * {
+      padding-inline: space(5);
+
+      @include respond("lg") {
+        padding-inline: space(12);
+      }
+    }
+
+    @include respond("md") {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @include respond("lg") {
+      padding-block: space(12);
+    }
+  }
+
+  &__text {
+    display: grid;
+    gap: space(2);
+  }
+
+  &__title {
+    @include text("h2");
+  }
+
+  &__lead {
+    @include text("body-l");
+    color: c("on-dark");
+  }
+
+  &__actions {
+    @include flex(row, center, flex-start, 3, wrap);
+  }
 }

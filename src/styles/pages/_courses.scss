@@ -1,0 +1,121 @@
+// Courses catalog: filters sidebar (3 cols) + results (9 cols) on desktop
+@use "../abstracts" as *;
+
+.catalog {
+  @include grid-row(6);
+  align-items: start;
+  padding-block: space(6) space(10);
+
+  @include respond("lg") {
+    padding-block: space(8) space(20);
+  }
+
+  &__filters {
+    @include grid-col((xs: 4, md: 8, lg: 3));
+  }
+
+  &__results {
+    @include grid-col((xs: 4, md: 8, lg: 9));
+  }
+}
+
+.filters {
+  &__toggle {
+    display: none; // collapsing on phones comes with JS in Lab 4
+  }
+
+  &__form {
+    @include surface("lg", 5);
+    display: grid;
+    gap: space(5);
+
+    @include respond("md") {
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: space(6);
+    }
+
+    @include respond("lg") {
+      position: sticky;
+      top: rem(96);
+      grid-template-columns: 1fr;
+      padding: space(6);
+    }
+  }
+
+  &__head {
+    @include flex(row, center, space-between, 2);
+    grid-column: 1 / -1;
+  }
+
+  &__title {
+    @include text("h4");
+  }
+
+  &__clear {
+    @include text("small-b");
+    color: c("primary");
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__group {
+    display: grid;
+    gap: space(3);
+    align-content: start;
+
+    @include respond("lg") {
+      padding-top: space(5);
+      border-top: 1px solid c("border");
+    }
+  }
+
+  &__legend {
+    margin-bottom: space(3);
+    @include text("small-b");
+  }
+
+  &__apply {
+    grid-column: 1 / -1;
+  }
+}
+
+.results {
+  &__toolbar {
+    @include flex(row, center, space-between, 4, wrap);
+    margin-bottom: space(4);
+  }
+
+  &__title {
+    @include text("h4");
+  }
+
+  &__active {
+    @include reset-list;
+    @include flex(row, center, flex-start, 2, wrap);
+    margin-bottom: space(6);
+  }
+
+  &__list {
+    @include respond("lg") {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+.sort {
+  @include flex(row, center, flex-start, 3);
+
+  &__label {
+    @include text("small");
+    color: c("muted");
+  }
+
+  &__select {
+    @include field-control(44);
+    width: auto;
+    min-width: rem(200);
+    @include select-arrow;
+  }
+}

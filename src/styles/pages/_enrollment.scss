@@ -1,0 +1,230 @@
+// Enrollment: form 8 cols + sticky order summary 4 cols on desktop
+@use "../abstracts" as *;
+
+.enrollment {
+  @include grid-row(6);
+  align-items: start;
+  padding-block: space(6) space(10);
+
+  @include respond("lg") {
+    padding-block: space(8) space(20);
+  }
+
+  &__form {
+    @include grid-col((xs: 4, md: 8, lg: 8));
+    grid-row: 2;
+
+    @include respond("lg") {
+      grid-row: 1;
+    }
+  }
+
+  &__summary {
+    @include grid-col((xs: 4, md: 8, lg: 4));
+    grid-row: 1;
+
+    @include respond("lg") {
+      position: sticky;
+      top: rem(96);
+    }
+  }
+}
+
+.enroll-form {
+  display: grid;
+  gap: space(4);
+
+  @include respond("lg") {
+    gap: space(6);
+  }
+
+  &__group {
+    @include surface("xl", 5);
+    display: grid;
+    gap: space(4);
+    @include animate(appear);
+
+    @include respond("md") {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: space(5);
+    }
+
+    @include respond("lg") {
+      padding: space(8);
+    }
+
+    > *:not(.field):not(.plan),
+    .field:has(textarea) {
+      grid-column: 1 / -1;
+    }
+
+    &--agreements {
+      padding: 0 space(1);
+      background: none;
+      border: 0;
+
+      @include respond("md") {
+        grid-template-columns: 1fr;
+      }
+
+      @include respond("lg") {
+        padding: 0 space(1);
+      }
+    }
+  }
+
+  &__legend {
+    float: left; // lets the legend take part in the grid layout of the fieldset
+    width: 100%;
+    @include text("h3");
+  }
+
+  &__hint {
+    margin-top: calc(-1 * #{space(3)});
+    @include text("small");
+    color: c("muted");
+  }
+
+  &__actions {
+    @include flex(column-reverse, stretch, space-between, 3);
+
+    @include respond("md") {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}
+
+.summary {
+  @include surface("xl", 5, true, "card");
+  display: grid;
+  gap: space(4);
+
+  @include respond("lg") {
+    padding: space(6);
+  }
+
+  &__title {
+    @include text("h4");
+  }
+
+  &__course {
+    display: grid;
+    grid-template-columns: rem(88) 1fr;
+    column-gap: space(3);
+    align-items: center;
+  }
+
+  &__picture {
+    grid-row: 1 / span 2;
+  }
+
+  &__img {
+    width: rem(88);
+    aspect-ratio: 88 / 60;
+    object-fit: cover;
+    border-radius: radius("md");
+  }
+
+  &__course-title {
+    @include text("small-b");
+
+    a {
+      color: c("ink");
+      text-decoration: none;
+
+      &:hover {
+        color: c("primary");
+      }
+    }
+  }
+
+  &__course-meta {
+    @include text("caption");
+    color: c("muted");
+  }
+
+  &__table {
+    width: 100%;
+    @include text("small");
+  }
+
+  &__row {
+    border-top: 1px solid c("border");
+
+    &--discount .summary__value {
+      color: c("success");
+    }
+
+    &--total {
+      .summary__name {
+        @include text("h4");
+      }
+
+      .summary__value {
+        @include text("price-l");
+      }
+    }
+  }
+
+  &__name,
+  &__value {
+    padding-block: space(3);
+  }
+
+  &__name {
+    font-weight: 400;
+    color: c("muted");
+    text-align: left;
+  }
+
+  &__value {
+    font-weight: 600;
+    text-align: right;
+  }
+
+  &__note {
+    padding: space(3) space(4);
+    @include text("small");
+    color: c("primary");
+    background-color: c("primary-soft");
+    border-radius: radius("md");
+  }
+
+  &__perks {
+    @include reset-list;
+    display: grid;
+    gap: space(2);
+  }
+
+  &__perk {
+    @include text("small");
+
+    &::before {
+      content: "✓ ";
+      font-weight: 700;
+      color: c("success");
+    }
+  }
+}
+
+.promo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: space(2);
+
+  &__label {
+    grid-column: 1 / -1;
+    @include text("small-m");
+  }
+
+  &__input {
+    @include field-control(40);
+    padding-block: space(2);
+  }
+
+  &__button {
+    min-height: rem(40);
+    padding-inline: space(4);
+  }
+}
