@@ -1,108 +1,72 @@
-# Web Labs Starter (Vite + json-server)
+# Learnova — online IT courses catalog
 
-A forkable starter for a 4-lab web course (HTML, SCSS, JS + API).
-- **No UI frameworks**; SCSS with mixins & functions.
-- **ES Modules**, simple class-based structure.
-- **json-server** bundled for mock API.
-- **ESLint** preconfigured.
+Course project for "Web technologies and web design" (topic 5 — **Online IT Courses Catalog**).
+One site that grows lab by lab: Figma design → HTML skeleton → SCSS → JS + API.
 
-[API documentation](./api/API_MAP.md)
+- **Live preview (latest):** https://nepyx33.github.io/Learnova/
+- **Each lab, frozen at its git tag:** [Lab 2](https://nepyx33.github.io/Learnova/lab2/) · Lab 3 (`/lab3/`) · Lab 4 (`/lab4/`)
+- **Figma (Lab 1):** https://www.figma.com/design/vtuXHX0pOdyBjb8pBaVg0v/LR1---Learnova--Online-IT-Courses----Tsyba-Yurii-KN-41
+- Based on the course template [web-template-2025](https://github.com/MarkovDmitriy/web-template-2025)
 
-## Quick start
+## Pages
+
+| Page | File | Content |
+|---|---|---|
+| Home | `index.html` | hero with search, stats, categories, popular courses, features, call to action |
+| Courses | `courses.html` | catalog of 9 courses with filters (category, level, price, rating, duration), sorting, active filters, pagination |
+| Course details | `course-details.html` | course info, purchase card, what you'll learn, curriculum (6 modules), instructor, reviews, related course |
+| Enrollment | `enrollment.html` | 3-step progress, form (personal info, plan, schedule, agreements), order summary with promo code |
+
+## Progress
+
+| Lab | Status | What was added |
+|---|---|---|
+| 1 — Figma | ✅ | design system (5 core colors as styles + variables, Manrope / Inter text styles, 12 / 8 / 4 col grids), components with variants, 4 pages × desktop 1280 / mobile 360 |
+| 2 — HTML | ✅ | semantic markup of 4 pages, relative navigation, `picture` + `srcset` (WebP + JPEG), EJS partials, schema.org microdata, i18n data attributes |
+| 3 — SCSS | ⏳ | |
+| 4 — JS + API | ⏳ | |
+
+### Lab 2 details
+
+- **Semantics:** `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`; tables with `caption` / `th scope` (curriculum, order summary); forms with `label`, `fieldset` / `legend` (search, filters, sorting, enrollment, promo code); `details` / `summary`, `dl`, `data`, `time`, `output`.
+- **Accessibility:** skip link, `aria-current="page"` in navigation and breadcrumbs, `aria-current="step"` in the enrollment progress, `aria-label` on icon / repeated buttons, `aria-pressed` on toggle buttons, `aria-describedby` hints, one `h1` per page without skipped heading levels.
+- **Responsive images:** `<picture>` with WebP `source` and JPEG fallback, `srcset` with 2 widths and `sizes`, `width` / `height`, lazy loading (`src/assets/images`).
+- **Templating (EJS):** `src/partials/` — `head`, `header`, `footer`, `course-card`, `picture`, `breadcrumbs`. Pages are rendered by a small Vite plugin in `vite.config.js`; data for the partials is in `src/data/site.js`.
+- **schema.org:** `Course` microdata with `Offer`, `AggregateRating`, `Person` and `Review` on the course details page and on every course card.
+- **i18n:** UI strings have keys in `data-i18n`, `data-i18n-placeholder`, `data-i18n-aria-label`. Texts are in `src/i18n/en.js`, applied by `src/js/core/i18n.js`.
+- **BEM** class names, no inline styles. Styles are added in Lab 3.
+
+## Run locally
+
 ```bash
 npm install
-npm run dev:vite
+npm run dev      # Vite on http://localhost:5173 + json-server on http://localhost:5174
+npm run build    # ESLint + production build to dist/
+npm run preview  # serve dist/
+npm run api      # json-server only
 ```
-- App: http://localhost:5173
-- API: http://localhost:5174
 
-## Scripts Vite
-- `npm run dev:vite` – starts Vite + json-server concurrently
-- `npm run build:vite` – builds for production
-- `npm run preview:vite` – preview build locally
-- `npm run lint` – run ESLint
+API for this topic (`api/routes.json`): `/topic5/courses`, `/topic5/courses/:id`, `/topic5/instructors`, `/topic5/categories`, `/topic5/reviews`, `/topic5/enrollments`.
+See [api/API_MAP.md](api/API_MAP.md) for query params (`_page`, `_limit`, `_sort`, `_order`, `q`).
 
-## Scripts Webpack
-- `npm run dev:webpack` – starts Webpack + json-server concurrently
-- `npm run build:webpack` – builds for production
-- `npm run preview:webpack` – preview build locally
-- `npm run lint` – run ESLint
+## Deploy
 
-## Folder structure
+`.github/workflows/deploy.yml` builds the site on every push to `main` and publishes it to GitHub Pages:
+the latest version goes to `/`, every git tag `lab2`, `lab3`, `lab4` is built into its own folder (`/lab2/` …).
+Repository settings: **Settings → Pages → Source: GitHub Actions**.
+
+## Structure
+
 ```
-public/
+api/                 db.json + routes.json for json-server
+index.html, courses.html, course-details.html, enrollment.html
 src/
-  assets/
-  styles/        # SCSS 7–1 architecture
-    abstracts/   # _variables.scss, _functions.scss, _mixins.scss
-    base/        # _reset.scss, _typography.scss
-    components/  # _button.scss, _card.scss ...
-    layout/      # _grid.scss, _header.scss, _footer.scss
-    pages/       # _home.scss, _list.scss, ...
-    themes/
-    vendors/
-    main.scss
-  js/
-    api/
-      http.js        # axios instance
-      endpoints.js   # REST endpoints
-    core/
-      store.js       # minimal state/pubsub
-      utils.js
-    components/
-      # class-based components (ListView, Paginator, etc.)
-    pages/
-      # controllers per route/page
-    main.js
-  index.html
-vite.config.js
-.eslintrc.cjs
-DEVLOG.md
-Prompts.md
+  partials/          EJS partials (head, header, footer, course card, picture, breadcrumbs)
+  data/site.js       data for the EJS partials
+  i18n/en.js         UI strings
+  assets/images/     favicon, covers, hero, avatar (webp + jpg, 2 widths each)
+  js/                main.js + i18n; api client and store from the template (used in Lab 4)
+  styles/            SCSS 7-1 (Lab 3)
+vite.config.js       multi-page build + EJS plugin
+.github/workflows/deploy.yml   build and deploy to GitHub Pages
 ```
-
----
-
-## LAB 1 – Figma (Web + Mobile), 4 pages (BEGINNER-FRIENDLY)
-**Goal:** build simple desktop & mobile mockups and reusable elements.
-
-### Required (6 pts)
-1) Colors: pick 3–5 main colors (background, text, accent).  
-2) Fonts: define 2 text styles (Headings, Body).  
-3) Components: Button (default + hover), Input (default).  
-4) Grids: 12-col (desktop ≥1280px), 4-col (mobile 360–390px).  
-5) Pages: Design **4 pages** in both desktop & mobile.
-
-### Optional (to 8 pts)
-6) Use Auto layout on sections (cards, lists, forms).  
-7) Create a small library: buttons, inputs, cards.
-
-### Bonus (to 10–12 pts)
-8) Prototype one flow (e.g., Search → Details → Form).  
-9) Basic accessibility: check color contrast, add focus state.
-
-**Submit:** Figma view link + short description of pages and chosen colors/fonts.
-
----
-
-## LAB 2 – HTML & Semantics (skeleton)
-- 4 pages with semantic tags (header/nav/main/section/article/aside/footer).
-- Accessible images (alt), forms with labels.  
-- (+) Extra: server-side templating (EJS/Pug) for repeated parts.
-
-## LAB 3 – SCSS & Responsive
-- SCSS 7–1, BEM.
-- Mixins & functions (grid, container, rem(), color helpers).
-- 3 breakpoints: 360–390 / 768 / ≥1280, responsive images.
-
-## LAB 4 – JS + API (json-server)
-- axios-based API client, list + filters + search + sort.
-- Pagination (buttons or infinite scroll).
-- Form with validation; localStorage cache.
-- (+) Optional: hash-router; debounce search; optimistic UI for likes.
-
----
-
-## Academic honesty / AI usage
-- Keep a weekly **DEVLOG.md** and **Prompts.md** if AI was used.
-- Unique prefixes in class/selectors encouraged to reduce plagiarism.
