@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<% const c = site.course; -%>
+<%- include('src/partials/head', { title: 'Enroll in the course', description: 'Enroll in ' + c.title + '. Demo form, no real payment is taken.' }) %>
+</head>
+<body class="page page--enrollment">
+<%- include('src/partials/header', { active: 'enrollment' }) %>
+
+  <main class="main" id="main">
+    <header class="page-header">
+      <div class="page-header__inner container">
+<%- include('src/partials/breadcrumbs', { items: [['Home', './index.html'], ['Courses', './courses.html'], [c.title, './course-details.html?id=' + c.id], ['Enrollment']] }) %>
+        <h1 class="page-header__title" data-i18n="enroll.title">Enroll in the course</h1>
+        <p class="page-header__subtitle" data-i18n="enroll.subtitle">No payment is required. This is a demo enrollment form.</p>
+        <ol class="stepper" aria-label="Enrollment progress" data-i18n-aria-label="enroll.steps.label">
+          <li class="stepper__step stepper__step--done"><span class="visually-hidden">Completed: </span><span data-i18n="enroll.steps.course">Course</span></li>
+          <li class="stepper__step stepper__step--current" aria-current="step"><span data-i18n="enroll.steps.details">Your details</span></li>
+          <li class="stepper__step"><span data-i18n="enroll.steps.confirm">Confirmation</span></li>
+        </ol>
+      </div>
+    </header>
+
+    <div class="enrollment container">
+      <form class="enrollment__form enroll-form" id="enroll-form" action="./enrollment.html" method="post" aria-labelledby="enroll-form-title" novalidate>
+        <h2 class="visually-hidden" id="enroll-form-title" data-i18n="enroll.form.title">Enrollment form</h2>
+
+        <fieldset class="enroll-form__group" id="account">
+          <legend class="enroll-form__legend" data-i18n="enroll.personal.title">Personal information</legend>
+          <p class="enroll-form__hint" data-i18n="enroll.personal.hint">We will use these details to create your student account.</p>
+
+          <div class="field">
+            <label class="field__label" for="first-name" data-i18n="enroll.fields.firstName">First name</label>
+            <input class="field__input" id="first-name" name="firstName" type="text" autocomplete="given-name" required placeholder="Andrii" data-i18n-placeholder="enroll.placeholders.firstName" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="last-name" data-i18n="enroll.fields.lastName">Last name</label>
+            <input class="field__input" id="last-name" name="lastName" type="text" autocomplete="family-name" required placeholder="Petrenko" data-i18n-placeholder="enroll.placeholders.lastName" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="email" data-i18n="enroll.fields.email">Email address</label>
+            <input class="field__input" id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" aria-describedby="email-help" data-i18n-placeholder="enroll.placeholders.email" />
+            <p class="field__help" id="email-help" data-i18n="enroll.help.email">We will send the confirmation here.</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="phone" data-i18n="enroll.fields.phone">Phone (optional)</label>
+            <input class="field__input" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="\+?[0-9 ]{10,16}" placeholder="+380 67 000 00 00" aria-describedby="phone-help" data-i18n-placeholder="enroll.placeholders.phone" />
+            <p class="field__help" id="phone-help" data-i18n="enroll.help.phone">Format: +380 followed by 9 digits.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="enroll-form__group plans">
+          <legend class="enroll-form__legend" data-i18n="enroll.plan.title">Choose your plan</legend>
+          <p class="enroll-form__hint" data-i18n="enroll.plan.hint">You can upgrade to the mentor plan at any time.</p>
+          <div class="plan">
+            <input class="plan__input" type="radio" id="plan-self" name="plan" value="self-paced" checked />
+            <label class="plan__label" for="plan-self">
+              <span class="plan__name">Self-paced</span>
+              <span class="plan__description">Video lessons, quizzes, 12 projects and a certificate</span>
+              <span class="plan__price">$49</span>
+            </label>
+          </div>
+          <div class="plan">
+            <input class="plan__input" type="radio" id="plan-mentor" name="plan" value="mentor" />
+            <label class="plan__label" for="plan-mentor">
+              <span class="plan__name">With mentor</span>
+              <span class="plan__description">Everything in Self-paced plus weekly code reviews and 1:1 calls</span>
+              <span class="plan__price">$129</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="enroll-form__group">
+          <legend class="enroll-form__legend" data-i18n="enroll.schedule.title">Schedule &amp; goals</legend>
+          <div class="field">
+            <label class="field__label" for="start-date" data-i18n="enroll.fields.startDate">Start date</label>
+            <select class="field__select" id="start-date" name="startDate" required>
+              <option value="2026-12-01" selected>December 1, 2026</option>
+              <option value="2027-01-12">January 12, 2027</option>
+              <option value="2027-02-09">February 9, 2027</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="experience" data-i18n="enroll.fields.level">Your level</label>
+            <select class="field__select" id="experience" name="experience">
+              <option value="none" selected>Complete beginner</option>
+              <option value="basic">I know HTML and CSS</option>
+              <option value="some">I have written some JavaScript</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="goal" data-i18n="enroll.fields.goal">What do you want to achieve? (optional)</label>
+            <textarea class="field__textarea" id="goal" name="goal" rows="4" maxlength="300" aria-describedby="goal-help" placeholder="I want to switch careers and become a frontend developer." data-i18n-placeholder="enroll.placeholders.goal"></textarea>
+            <p class="field__help" id="goal-help">Up to 300 characters.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="enroll-form__group enroll-form__group--agreements">
+          <legend class="visually-hidden" data-i18n="enroll.agreements">Agreements</legend>
+          <div class="checkbox">
+            <input class="checkbox__input" type="checkbox" id="terms" name="terms" required />
+            <label class="checkbox__label" for="terms">I agree to the <a href="./index.html#why">Terms of Service</a> and <a href="./index.html#why">Privacy Policy</a></label>
+          </div>
+          <div class="checkbox">
+            <input class="checkbox__input" type="checkbox" id="newsletter" name="newsletter" />
+            <label class="checkbox__label" for="newsletter" data-i18n="enroll.fields.newsletter">Send me learning tips and course updates</label>
+          </div>
+        </fieldset>
+
+        <div class="enroll-form__actions">
+          <a class="button button--ghost" href="./course-details.html?id=<%= c.id %>" data-i18n="enroll.back">Back to course</a>
+          <button class="button button--primary" type="submit" data-i18n="enroll.submit">Confirm enrollment</button>
+        </div>
+      </form>
+
+      <aside class="enrollment__summary summary" aria-labelledby="summary-title">
+        <h2 class="summary__title" id="summary-title" data-i18n="enroll.summary.title">Order summary</h2>
+        <div class="summary__course">
+          <%- include('src/partials/picture', { name: 'covers/frontend', alt: '', widths: [400, 800], sizes: '88px', width: 400, height: 226, cls: 'summary__picture' }) %>
+          <p class="summary__course-title"><a href="./course-details.html?id=<%= c.id %>"><%= c.title %></a></p>
+          <p class="summary__course-meta"><%= c.instructor %> · <%= c.hours %> h</p>
+        </div>
+        <table class="summary__table">
+          <caption class="visually-hidden">Price breakdown</caption>
+          <tbody>
+            <tr class="summary__row">
+              <th class="summary__name" scope="row">Self-paced plan</th>
+              <td class="summary__value"><data value="89">$89</data></td>
+            </tr>
+            <tr class="summary__row summary__row--discount">
+              <th class="summary__name" scope="row">Black Friday discount</th>
+              <td class="summary__value"><data value="-40">−$40</data></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="summary__row summary__row--total">
+              <th class="summary__name" scope="row">Total</th>
+              <td class="summary__value"><data value="49">$49</data></td>
+            </tr>
+          </tfoot>
+        </table>
+        <form class="summary__promo promo" action="./enrollment.html" method="get">
+          <label class="promo__label" for="promo-code" data-i18n="enroll.summary.promo">Promo code</label>
+          <input class="promo__input" id="promo-code" name="promo" type="text" autocomplete="off" placeholder="LEARN10" />
+          <button class="promo__button button button--secondary" type="submit" data-i18n="enroll.summary.apply">Apply</button>
+        </form>
+        <p class="summary__note" role="note" data-i18n="enroll.summary.note">Demo mode: no real payment will be taken.</p>
+        <ul class="summary__perks">
+          <li class="summary__perk">Lifetime access</li>
+          <li class="summary__perk">Certificate of completion</li>
+          <li class="summary__perk">30-day money-back guarantee</li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+
+<%- include('src/partials/footer') %>
+  <script type="module" src="./src/js/main.js"></script>
+</body>
+</html>
