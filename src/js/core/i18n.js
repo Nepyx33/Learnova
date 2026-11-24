@@ -11,7 +11,7 @@ import en from "../../i18n/en.js";
 const dictionaries = { en };
 
 const lookup = (dict, key) =>
-  key.split(".").reduce((node, part) => (node == null ? undefined : node[part]), dict);
+  key.split(".").reduce((node, part) => (node === null || node === undefined ? undefined : node[part]), dict);
 
 export function t(key, lang = document.documentElement.lang || "en") {
   const value = lookup(dictionaries[lang] || dictionaries.en, key);
